@@ -69,7 +69,11 @@ function GetDayAndMonth
 
 function HowOld
 {
-  echo $((`GetYear`-`GetParamYear`))
+  if [ `GetYear | bc` -eq 0 ]; then
+    echo 0
+  else
+    echo $((`GetYear`-`GetParamYear`))
+  fi
 }
 
 n=1

@@ -1,0 +1,12 @@
+Package: holidaysh
+Version: 1.0-1
+Provides: holidaysh
+Maintainer: Antigluk <antigluk@gmail.com>
+Architecture: all
+Section: misc
+Description: Напоминалка о событиях
+ Напоминалка о событиях разного типа
+ Возможно легко добавлять шаблоны новых событий
+Depends: bc
+Installed-Size: 3
+Priority: optional
