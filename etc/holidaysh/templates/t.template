@@ -1,0 +1,12 @@
+#!/bin/bash
+
+. /etc/holidaysh/inc
+
+curdate=`GetDayAndMonth`
+temdate=`GetParamDayAndMonth`
+if [ $curdate == $temdate ]; then
+  task=`GetParam 2`
+  echo "Сегодня тебе нужно $task"
+else
+  exit 0
+fi

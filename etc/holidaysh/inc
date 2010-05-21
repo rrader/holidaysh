@@ -1,0 +1,24 @@
+function FindTemplate
+{
+  td=`echo $TEMPLATESDIR | tr "|" "\n"`
+  for i in $td; do
+    if [ -r "$i"/"$1" ]; then
+      echo "$i"/"$1"
+      exit;
+    fi
+  done
+}
+
+if [ -z $TINYINC ]; then
+  
+  WORKPATH="`pwd`"
+  . /etc/holidaysh/holidaysh.conf
+  TEMPLATESDIR="$TEMPLATES"
+  
+  if [ -r ~/.holidayshrc ]; then
+    . ~/.holidayshrc
+    TEMPLATESDIR="$TEMPLATESDIR|$TEMPLATES"
+  fi
+  source `FindTemplate TemplateHeader`
+
+fi

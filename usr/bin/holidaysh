@@ -1,0 +1,78 @@
+#!/bin/bash
+
+TINYINC="1"
+. /etc/holidaysh/inc
+TINYINC=""
+
+TEMPLINES="/tmp/${RANDOM}${RANDOM}${RANDOM}"
+
+WORKPATH="`pwd`"
+. /etc/holidaysh/holidaysh.conf
+cat $HOLIDAYSLIST > $TEMPLINES
+TEMPLATESDIR="$TEMPLATES"
+
+files=`find "/etc/holidaysh/holidays.d/" -type f`
+for i in $files; do
+  cat $i >> $TEMPLINES
+done
+
+if [ -r ~/.holidayshrc ]; then
+  . ~/.holidayshrc
+  cat $HOLIDAYSLIST >> $TEMPLINES
+  TEMPLATESDIR="$TEMPLATESDIR|$TEMPLATES"
+fi
+
+lines=`cat $TEMPLINES`
+TEMPSCRIPT="/tmp/${RANDOM}${RANDOM}${RANDOM}"
+IFS=$'\n'
+
+#The first option may be the date
+#parameters processing
+n=1
+execparam=""
+while [ $n -ne 0 ]; do
+  n=0
+  case $1 in
+  -d)
+    n=1
+    shift;
+    execparam="$execparam -d $1"
+    shift;
+    ;;
+  -p)
+    n=1
+    shift;
+    execparam="$execparam -p $1"
+    shift;
+    ;;
+  esac
+done
+
+#read templates
+ltemplates=`<$TEMPLINES awk '{ print $1 }'`
+n=0
+for i in $ltemplates; do
+  ((n++))
+  templates[$n]=$i
+done
+
+#read params
+lparams=`<$TEMPLINES sed "s/^[^\t]*\t//g"`
+n=0
+for i in $lparams; do
+  ((n++))
+  params[$n]=$i
+done
+
+#execute
+echo "#!/bin/bash" > $TEMPSCRIPT
+n=0
+for i in ${templates[@]}; do
+  ((n++))
+  tname="`FindTemplate ${i}.template`"
+  echo "$tname ${execparam} \"${params[$n]}\"" >> $TEMPSCRIPT
+done
+chmod +x $TEMPSCRIPT
+$TEMPSCRIPT
+rm $TEMPSCRIPT
+rm $TEMPLINES

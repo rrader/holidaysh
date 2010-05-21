@@ -1,0 +1,13 @@
+#!/bin/bash
+
+. /etc/holidaysh/inc
+
+curdate=`GetDayAndMonth`
+temdate=`GetParamDayAndMonth`
+
+if [ $curdate == $temdate ]; then
+  info=`GetParam 2`
+  echo "Сегодня $info"
+else
+  exit 0
+fi
