@@ -22,7 +22,6 @@ if [ -r ~/.holidayshrc ]; then
   TEMPLATESDIR="$TEMPLATESDIR|$TEMPLATES"
 fi
 
-lines=`cat $TEMPLINES`
 TEMPSCRIPT="/tmp/${RANDOM}${RANDOM}${RANDOM}"
 IFS=$'\n'
 
@@ -45,8 +44,16 @@ while [ $n -ne 0 ]; do
     execparam="$execparam -p $1"
     shift;
     ;;
+  -f)
+    n=1
+    shift;
+    cat $1 >> $TEMPLINES
+    shift;
+    ;;
   esac
 done
+
+lines=`cat $TEMPLINES`
 
 #read templates
 ltemplates=`<$TEMPLINES awk '{ print $1 }'`
