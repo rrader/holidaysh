@@ -7,18 +7,17 @@ dayandmonth=`date "+%d/%m"`
 
 function GetParam
 {
-  echo "$FIRSTPARAM" | awk -F '\t' "{ print \$$1 }"
+  echo ${TParams[$1]}
 }
 
 function GetAddParam
 {
-  echo "$ADDPARAMS" | awk -F ',' "{ print \$$1 }"
+  echo ${TAddParams[$1]}
 }
 
 function FindParam
 {
-  lines=`echo "$ADDPARAMS" | tr "," "\n"`
-  for i in $lines; do
+  for i in ${TAddParams[@]}; do
     if [ $i == $1 ]; then
       echo 1
       exit
@@ -69,11 +68,46 @@ function GetDayAndMonth
 
 function HowOld
 {
-  if [ `GetYear | bc` -eq 0 ]; then
+  if [ "`GetParamYear | bc`" == "0" ]; then
     echo 0
   else
     echo $((`GetYear`-`GetParamYear`))
   fi
+}
+
+function ProcessParameters
+{
+  x=`echo "$FIRSTPARAM"`
+  IFS=$'\t'
+  n=0
+  TParams=0
+  for i in $x; do
+    ((n++))
+    TParams[$n]=$i
+  done
+
+
+  x=`echo "$ADDPARAMS"`
+  IFS=$','
+  n=0
+  for i in $x; do
+    ((n++))
+    TAddParams[$n]=$i
+  done
+}
+
+function TextModifyGlobalParameters
+{
+  x=`echo $1`
+  if [ "`FindParam speech`" == "1" ]; then
+    x=`echo $x | sed "s/[^a-zA-Z0-9а-яА-Я,:-+]/ /g" | sed -r 's/,([^ ])/ \1/g' | sed -r 's/:([^ ])/ \1/g' | sed -r 's/ -([^ ])/ \1/g'`
+  fi
+  echo $x
+}
+
+function EchoText
+{
+  TextModifyGlobalParameters $1
 }
 
 n=1
@@ -83,11 +117,10 @@ while [ $n -ne 0 ]; do
   -d)
     n=1
     shift;
-    FIRSTPARAM=$1
-    day=`GetParamDay`
-    month=`GetParamMonth`
-    year=`GetParamYear`
-    dayandmonth=`GetParamDayAndMonth`
+    day=`echo $1 | tr "/" "\n" | sed "1 ! d"`
+    month=`echo $1 | tr "/" "\n" | sed "2 ! d"`
+    year=`echo $1 | tr "/" "\n" | sed "3 ! d"`
+    dayandmonth=`echo $1 | sed "s/\/[^/]*$//"`
     shift;
     ;;
   -p)
@@ -100,3 +133,4 @@ while [ $n -ne 0 ]; do
 done
 
 FIRSTPARAM=$1
+ProcessParameters

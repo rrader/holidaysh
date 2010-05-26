@@ -20,5 +20,4 @@ if [ -z $TINYINC ]; then
     TEMPLATESDIR="$TEMPLATESDIR|$TEMPLATES"
   fi
   source `FindTemplate TemplateHeader`
-
 fi
