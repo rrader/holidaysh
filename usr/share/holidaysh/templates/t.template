@@ -5,9 +5,8 @@
 curdate=`GetDayAndMonth`
 temdate=`GetParamDayAndMonth`
 if [ $curdate == $temdate ]; then
-  time=`GetParam 2`
-  task=`GetParam 3`
-  EchoText "Сегодня в $time тебе нужно $task"
+  task=`GetParam 2`
+  echo "Сегодня тебе нужно $task"
 else
   exit 0
 fi

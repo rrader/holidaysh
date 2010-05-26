@@ -1,0 +1,98 @@
+FIRSTPARAM=$1
+ADDPARAMS=""
+day=`date "+%d"`
+month=`date "+%m"`
+year=`date "+%Y"`
+dayandmonth=`date "+%d/%m"`
+
+function GetParam
+{
+  echo "$FIRSTPARAM" | awk -F '\t' "{ print \$$1 }"
+}
+
+function GetAddParam
+{
+  echo "$ADDPARAMS" | awk -F ',' "{ print \$$1 }"
+}
+
+function FindParam
+{
+  lines=`echo "$ADDPARAMS" | tr "," "\n"`
+  for i in $lines; do
+    if [ $i == $1 ]; then
+      echo 1
+      exit
+    fi
+  done
+  echo 0
+}
+
+function GetParamDayAndMonth
+{
+  GetParam 1 | sed "s/\/[^/]*$//"
+}
+
+function GetParamDay
+{
+  GetParam 1 | tr "/" "\n" | sed "1 ! d"
+}
+
+function GetParamMonth
+{
+  GetParam 1 | tr "/" "\n" | sed "2 ! d"
+}
+
+function GetParamYear
+{
+  GetParam 1 | tr "/" "\n" | sed "3 ! d"
+}
+
+function GetDay
+{
+  echo "$day"
+}
+
+function GetMonth
+{
+  echo "$month"
+}
+
+function GetYear
+{
+  echo "$year"
+}
+
+function GetDayAndMonth
+{
+  echo "$dayandmonth"
+}
+
+function HowOld
+{
+  echo $((`GetYear`-`GetParamYear`))
+}
+
+n=1
+while [ $n -ne 0 ]; do
+  n=0
+  case $1 in
+  -d)
+    n=1
+    shift;
+    FIRSTPARAM=$1
+    day=`GetParamDay`
+    month=`GetParamMonth`
+    year=`GetParamYear`
+    dayandmonth=`GetParamDayAndMonth`
+    shift;
+    ;;
+  -p)
+    n=1
+    shift;
+    ADDPARAMS=$1
+    shift;
+    ;;
+  esac
+done
+
+FIRSTPARAM=$1

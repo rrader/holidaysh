@@ -4,15 +4,11 @@
 
 curdate=`GetDayAndMonth`
 temdate=`GetParamDayAndMonth`
-
+#echo "$curdate $temdate"
 if [ $curdate == $temdate ]; then
   name=`GetParam 2`
   temyear=`GetParamYear`
-  X="День рождения у $name"
-  if [ "`HowOld`" != "0" ]; then
-    X="$X, исполняется `HowOld`"
-  fi
-  EchoText $X
+  echo "День рождения у $name, исполняется `HowOld`"
 else
   exit 0
 fi
