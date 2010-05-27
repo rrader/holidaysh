@@ -1,5 +1,5 @@
-holidaysh (1.0-1) stable; urgency=medium
+holidaysh (1.0-2) unstable; urgency=low
 
-* Много интересных возможностей.
+  * Initial release. (Closes: #XXXXXX)
 
--- Antigluk <antigluk@gmail.com>  22.05.2010
+ -- Roman Rader (Antigluk) <antigluk@gmail.com>  Thu, 27 May 2010 00:05:04 +0300

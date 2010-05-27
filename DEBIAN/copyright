@@ -1,2 +1,17 @@
-Author: Roman Rader [Antigluk]
-License: GPLv2
+Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
+Name: holidaysh
+Maintainer: Roman Rader (Antigluk) <antigluk@gmail.com>
+Source: http://code.google.com/p/holidaysh/
+
+Copyright: 2010, Roman Rader (Antigluk) <antigluk@gmail.com>
+License: GPL-2
+     On Debian systems, the full text of the GNU General Public
+     License version 2 can be found in the file
+     `/usr/share/common-licenses/GPL-2'.
+
+Files: DEBIAN/*
+Copyright: 2010, Roman Rader (Antigluk) <antigluk@gmail.com>
+License: GPL-2
+     On Debian systems, the full text of the GNU General Public
+     License version 2 can be found in the file
+     `/usr/share/common-licenses/GPL-2'.
